@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:tc:postgresql:10.3://10.9.68.118:11297/transactions
+    hikari:
+      maximum-pool-size: 5
+
+logging:
+  level:
+    ROOT: INFO
+    com.github.epoddubny.testtaskrbkmoney: INFO
