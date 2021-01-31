@@ -1,17 +1,18 @@
+server:
+  port: ${PORT:11213}
+
 spring:
-  server:
-    port: ${PORT:11213}
+  application:
+    name: @project.name@
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${POSTGRES_URL}
-    hikari:
-      connection-timeout: 3000
-      idle-timeout: 10000
-      max-lifetime: 60000
+    url: jdbc:postgresql://postgres_db:5432/${POSTGRES_DB}?ApplicationName=${spring.application.name}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
 
 logging:
   level:
-    ROOT: ERROR
+    ROOT: INFO
     com.github.epoddubny.testtaskrbkmoney: ERROR
