@@ -1,0 +1,20 @@
+{
+  "namespace": "com.github.epoddubny.testtaskrbkmoney.avro",
+  "type": "record",
+  "name": "Transaction",
+  "fields": [
+    {
+      "name": "PID",
+      "type": "long"
+    },
+    {
+      "name": "PAMOUNT",
+      "type": "double"
+    },
+    {
+      "name": "PDATA",
+      "type": "string",
+      "avro.java.string": "String"
+    }
+  ]
+}

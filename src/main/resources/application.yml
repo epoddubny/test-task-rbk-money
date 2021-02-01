@@ -11,8 +11,33 @@ spring:
     url: jdbc:postgresql://postgres_db:5432/${POSTGRES_DB}?ApplicationName=${spring.application.name}
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
+  kafka:
+    bootstrap-servers: kafka:9093
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: com.github.epoddubny.testtaskrbkmoney.converter.CustomKafkaAvroSerializer
+    consumer:
+      group-id: test_task
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: com.github.epoddubny.testtaskrbkmoney.converter.CustomKafkaAvroDeserializer
+    properties:
+      schema.registry.url: http://localhost:8081
+      specific.avro.reader: true
+
+kafka:
+  enabled: true
+  topics:
+    transactions:
+      name: transactions
+      partitions: 3
+      replication-factor: 1
+    reports:
+      name: reports
+      partitions: 3
+      replication-factor: 1
 
 logging:
   level:
     ROOT: INFO
-    com.github.epoddubny.testtaskrbkmoney: ERROR
+    com.github.epoddubny.testtaskrbkmoney: INFO
