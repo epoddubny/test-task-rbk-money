@@ -37,6 +37,10 @@ kafka:
       partitions: 3
       replication-factor: 1
 
+report:
+  v1:
+    enabled: true
+
 logging:
   level:
     ROOT: INFO

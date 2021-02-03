@@ -17,7 +17,7 @@ import static org.mockito.Mockito.verify;
 
 class KafkaConsumerTest extends BaseSpringBootTest {
     @MockBean(TransactionValidationService.class)
-    private TransactionValidationService transactionValidationService;
+    private TransactionValidationService transactionValidationServiceMock;
     @Autowired
     private KafkaTemplate<String, Transaction> kafkaTemplate;
     @Value("${kafka.topics.transactions.name}")
@@ -32,7 +32,7 @@ class KafkaConsumerTest extends BaseSpringBootTest {
         kafkaTemplate.send(transactionsTopicName, transaction.getPID().toString(), transaction);
 
         // Then
-        verify(transactionValidationService, timeout(1000).times(1))
-                .validateTransaction(eq(transaction.getPID()), eq(BigDecimal.valueOf(transaction.getPAMOUNT())));
+        verify(transactionValidationServiceMock, timeout(5000).times(1))
+                .validateTransactionAndSendReport(eq(transaction.getPID()), eq(BigDecimal.valueOf(transaction.getPAMOUNT())));
     }
 }

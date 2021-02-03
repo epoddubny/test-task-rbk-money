@@ -1,0 +1,19 @@
+{
+  "namespace": "com.github.epoddubny.testtaskrbkmoney.avro",
+  "type": "record",
+  "name": "ReportV1",
+  "fields": [
+    {
+      "name": "ID",
+      "type": "long"
+    },
+    {
+      "name": "RES",
+      "type": {
+        "name": "ValidationResult",
+        "type": "enum",
+        "symbols": ["TRANSACTION_NOT_FOUND", "TRANSACTION_EQUALS", "TRANSACTION_DIFFERENT"]
+      }
+    }
+  ]
+}

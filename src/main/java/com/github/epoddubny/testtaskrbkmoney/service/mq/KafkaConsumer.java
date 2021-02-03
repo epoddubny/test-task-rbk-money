@@ -1,5 +1,6 @@
 package com.github.epoddubny.testtaskrbkmoney.service.mq;
 
+import com.github.epoddubny.testtaskrbkmoney.avro.ReportV1;
 import com.github.epoddubny.testtaskrbkmoney.avro.Transaction;
 import com.github.epoddubny.testtaskrbkmoney.service.TransactionValidationService;
 import lombok.extern.slf4j.Slf4j;
@@ -32,12 +33,16 @@ public class KafkaConsumer {
     public void transactionListener(ConsumerRecord<String, Transaction> record) {
         Transaction transaction = record.value();
         log.info("Receive transaction: {}, topic: {}", transaction, transactionsTopicName);
-        transactionValidationService
-                .validateTransaction(transaction.getPID(), BigDecimal.valueOf(transaction.getPAMOUNT()));
+        try {
+            transactionValidationService
+                    .validateTransactionAndSendReport(transaction.getPID(), BigDecimal.valueOf(transaction.getPAMOUNT()));
+        } catch (Exception e) {
+            log.error("Failed to validate transaction and send report. Transaction: " + transaction, e);
+        }
     }
 
     @KafkaListener(topics = "${kafka.topics.reports.name}", groupId = "${spring.kafka.consumer.group-id}")
-    public void reportListener(String message) {
-        log.info("Receive report: {}, topic: {}", message, reportsTopicName);
+    public void reportListener(ConsumerRecord<String, ReportV1> record) {
+        log.info("Receive report: {}, topic: {}", record.value(), reportsTopicName);
     }
 }
