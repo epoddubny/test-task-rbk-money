@@ -1,4 +1,34 @@
 # Тестовое задание
+
+## Локальный запуск:
+
+1) Создать директории для volume:
+    ```bash
+    mkdir -p /tmp/postgres
+    mkdir -p /tmp/kafka
+    ```
+
+2) Установить переменные окружения с кредами для БД:
+    ```bash
+    export POSTGRES_USER=your login here
+    export POSTGRES_PASSWORD=your password here
+    export POSTGRES_DB=your db name here
+    ```
+3) Запустить приложение в docker:
+    ```bash
+    docker-compose up
+    ```
+4) Выполнить curl запрос (id в базе см в п.1 начальных условий):
+    ```bash
+    curl --location --request POST 'localhost:11213/send-transaction' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "transactionId": 123,
+        "amount": 100.05,
+        "data": "test"
+    }'
+    ```
+5) Посмотреть логи приложения
 ## Начальные условия:
 
 1) БД Postgres с одной таблицей transactions с полями id, amount, data. В таблице 4 записи.
