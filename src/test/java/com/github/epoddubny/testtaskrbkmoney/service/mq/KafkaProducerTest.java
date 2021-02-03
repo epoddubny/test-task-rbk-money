@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import static com.github.epoddubny.testtaskrbkmoney.avro.ValidationResult.TRANSACTION_DIFFERENT;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
@@ -39,7 +41,12 @@ class KafkaProducerTest extends BaseSpringBootTest  {
         Transaction transaction = new Transaction();
 
         // When
-        kafkaProducer.sendReport(transaction);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            kafkaProducer.sendReport(transaction);
+        });
+
+        assertThat(exception.getMessage())
+                .isEqualTo("Unknown report type: class com.github.epoddubny.testtaskrbkmoney.avro.Transaction");
 
         // Then
         Thread.sleep(5000);

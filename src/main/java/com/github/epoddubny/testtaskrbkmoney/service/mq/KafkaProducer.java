@@ -1,6 +1,7 @@
 package com.github.epoddubny.testtaskrbkmoney.service.mq;
 
 import com.github.epoddubny.testtaskrbkmoney.avro.ReportV1;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.specific.SpecificRecord;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,12 +24,13 @@ public class KafkaProducer {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendReport(SpecificRecord report) {
+    public void sendReport(@NonNull SpecificRecord report) {
         if (report instanceof ReportV1) {
             log.info("Send report: {} to topic: {}", report, reportsTopicName);
             kafkaTemplate.send(reportsTopicName, report);
         } else {
             log.warn("Unknown report type");
+            throw new IllegalArgumentException("Unknown report type: " + report.getClass().toString());
         }
     }
 }
